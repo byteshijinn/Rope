@@ -100,8 +100,8 @@ class Models():
 
         io_binding = self.GFPGAN_model.io_binding()
         io_binding.bind_input(name='input', device_type='cuda', device_id=0, element_type=np.float32, shape=(1,3,512,512), buffer_ptr=image.data_ptr())
-        io_binding.bind_output(name='output', device_type='cuda', device_id=0, element_type=np.float32, shape=(1,3,512,512), buffer_ptr=output.data_ptr())  
-                
+        io_binding.bind_output(name='1288', device_type='cuda', device_id=0, element_type=np.float32, shape=(1,3,512,512), buffer_ptr=output.data_ptr())
+
         self.syncvec.cpu()          
         self.GFPGAN_model.run_with_iobinding(io_binding)                
 

@@ -966,13 +966,11 @@ class GUI(tk.Tk):
                     if img is not None:     
                         img = torch.from_numpy(img).to('cuda')
                         img = img.permute(2,0,1)
-                        kpss = self.models.run_detect(img, max_num=1)[0] # Just one face here
-
+                        kpss = self.models.run_detect(img, max_num=1)
                         ret = []
-    
-                        if kpss is not None:
-                            face_emb, cropped_image = self.models.run_recognize(img, kpss)
-                            ret.append([kpss, face_emb, cropped_image])
+                        if len(kpss) > 0:
+                            face_emb, cropped_image = self.models.run_recognize(img, kpss[0,:])
+                            ret.append([kpss[0,:], face_emb, cropped_image])
 
                         if ret:
                             crop = cv2.cvtColor(ret[0][2].cpu().numpy(), cv2.COLOR_BGR2RGB)            

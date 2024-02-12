@@ -1,14 +1,15 @@
---extra-index-url https://download.pytorch.org/whl/cu118
+--extra-index-url https://download.pytorch.org/whl/cu121
+--extra-index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/ort-cuda-12-nightly/pypi/simple/
 
-numpy==1.23.5
-opencv-python==4.7.0.72
+numpy
+opencv-python==4.9.0.80
 scikit-image==0.21.0
 tk==0.1.0
-pillow==9.5.0
+pillow==10.2.0
 onnx==1.14.0
-onnxruntime-gpu==1.16.2
+ort-nightly-gpu==1.17.0.dev20240118002
 protobuf==4.23.2
-torch==2.0.1+cu118
+torch==2.1.0+cu121
 torchvision==0.15.2
 torchaudio==2.0.2
 tqdm
