@@ -256,7 +256,8 @@ class GUI(tk.Tk):
         
         frame = tk.Frame(preview_data, style.canvas_frame_label_2, height = 24, width=100)
         frame.grid(row=0, column=2)    
-        self.widget['PreviewModeTextSel'] = GE.TextSelection(frame, 'PreviewModeTextSel', '', 2, self.set_view, '', 'control', width=100, height=20, x=0, y=0, text_percent=0.5)
+        # self.widget['PreviewModeTextSel'] = GE.TextSelection(frame, 'PreviewModeTextSel', '', 2, self.set_view, '', 'control', width=100, height=20, x=0, y=0, text_percent=0.5)
+        self.widget['VideoButton'] = GE.Button(frame, 'Video', 2, self.toggle_file_type, None, 'control', x=0, y=0, width=100)
 
         
 
@@ -701,7 +702,7 @@ class GUI(tk.Tk):
 
         # if self.focus_get() != self.CLIP_name and self.focus_get() != self.me_name and self.parameters['ImgVidMode'] == 0:
 
-        if self.widget['PreviewModeTextSel'].get()=='Video' and self.video_loaded:
+        if self.widget['PreviewModeTextSel']=='Video' and self.video_loaded:
             frame = self.video_slider.get()
             video_length = self.video_slider.get_length()
             if event == ' ':
@@ -1237,19 +1238,19 @@ class GUI(tk.Tk):
                         else:
                             print('Trouble opening file:', file)
                 
-        if self.widget['PreviewModeTextSel'].get()== 'Image':#images
+        if self.widget['PreviewModeTextSel']== 'Image':#images
+            delx, dely = 100, 79
             for i in range(len(images)):
-                self.target_media_buttons.append(tk.Button(self.target_media_canvas, style.media_button_off_3, height = 86, width = 86))
-
+                self.target_media_buttons.append(tk.Button(self.target_media_canvas, style.media_button_off_3, height = 86, width = 86, compound='left'))
                 rgb_video = Image.fromarray(images[i][0])        
                 self.target_media.append(ImageTk.PhotoImage(image=rgb_video))            
-                self.target_media_buttons[i].config( image = self.target_media[i],  command=lambda i=i: self.load_target(i, images[i][1], self.widget['PreviewModeTextSel'].get()))
+                self.target_media_buttons[i].config( image = self.target_media[i],  command=lambda i=i: self.load_target(i, images[i][1], self.widget['PreviewModeTextSel']))
                 self.target_media_buttons[i].bind("<MouseWheel>", self.target_videos_mouse_wheel)
-                self.target_media_canvas.create_window(i*92, 8, window = self.target_media_buttons[i], anchor='nw')
+                self.target_media_canvas.create_window((i%2)*delx, (i//2)*dely, window = self.target_media_buttons[i], anchor='nw')
 
             self.target_media_canvas.configure(scrollregion = self.target_media_canvas.bbox("all"))
        
-        elif self.widget['PreviewModeTextSel'].get()=='Video':#videos
+        elif self.widget['PreviewModeTextSel']=='Video':#videos
             delx, dely = 100, 79
             for i in range(len(videos)):
                 self.target_media_buttons.append(tk.Button(self.target_media_canvas, style.media_button_off_3, height = 65, width = 90))
@@ -1260,7 +1261,7 @@ class GUI(tk.Tk):
                     filename = filename[:11]+'...'
 
                 self.target_media_buttons[i].bind("<MouseWheel>", self.target_videos_mouse_wheel)
-                self.target_media_buttons[i].config(image = self.target_media[i], text=filename, compound='top', anchor='n',command=lambda i=i: self.load_target(i, videos[i][1], self.widget['PreviewModeTextSel'].get()))
+                self.target_media_buttons[i].config(image = self.target_media[i], text=filename, compound='top', anchor='n',command=lambda i=i: self.load_target(i, videos[i][1], self.widget['PreviewModeTextSel']))
                 self.target_media_canvas.create_window((i%2)*delx, (i//2)*dely, window = self.target_media_buttons[i], anchor='nw')
 
             self.static_widget['input_videos_scrollbar'].resize_scrollbar(None)
@@ -1436,7 +1437,7 @@ class GUI(tk.Tk):
 
 
     def toggle_play_video(self, set_value='toggle'):
-        if self.widget['PreviewModeTextSel'].get()=='Video':
+        if self.widget['PreviewModeTextSel']=='Video':
             if not self.video_loaded:
                 print("Please select video first!")
                 return
@@ -1622,10 +1623,10 @@ class GUI(tk.Tk):
         
     def set_view(self, a,b,c):
 
-        if self.widget['PreviewModeTextSel'].get()=='Video':
+        if self.widget['PreviewModeTextSel']=='Video':
             print('vide')
         
-        elif self.widget['PreviewModeTextSel'].get()=='Image':
+        elif self.widget['PreviewModeTextSel']=='Image':
             pass
 
 
@@ -1814,6 +1815,11 @@ class GUI(tk.Tk):
         self.control['MaskViewButton'] = self.widget['MaskViewButton'].get()        
         self.add_action('control', self.control)
         self.add_action('get_requested_video_frame', self.video_slider.get())
+
+    def toggle_file_type(self):
+        self.widget['VideoButton'].toggle_button()
+        self.widget['PreviewModeTextSel'] = "Image" if self.widget['VideoButton'].state else "Video"
+        self.widget['VideoButton'].button["text"] = "Image" if self.widget['VideoButton'].state else "Video"
         
     def parameter_io(self, task):
         if task=='save':

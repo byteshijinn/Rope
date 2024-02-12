@@ -137,6 +137,10 @@ DEFAULT_DATA = {
 'TLRightIconOn':                    './rope/media/tl_right_on.png',
 'TLRightInfoText':                  'TIMELEFT NUDGE RIGHT:\nMove the timeline handle to the RIGHT 30 frames.',
 'TLRightState':                     False,
+'VideoDisplay':                     'text',
+'VideoInfoText':                    'File Type',
+'VideoState':                       False,
+'VideoText':                        'Video',      
         
 #Switches       
 'ColorSwitchInfoText':              'RGB ADJUSTMENT:\nFine-tune the RGB color values of the swap.',
